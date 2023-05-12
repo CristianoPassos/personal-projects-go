@@ -1,4 +1,4 @@
-package main
+package opp
 
 import (
 	"encoding/json"
@@ -6,8 +6,21 @@ import (
 	"testing"
 )
 
+func TestGetMerchant(t *testing.T) {
+	err := os.Setenv("OPP_API_PATH_TO_KEY", "PATH_TO_OPP_KEY")
+	if err != nil {
+		panic(err)
+	}
+
+	apiResponse := GetMerchant("mer_id", "expand[]=metadata")
+
+	if apiResponse.Uid == "" {
+		t.Errorf("error")
+	}
+}
+
 func TestApiResponse2(t *testing.T) {
-	apiResponse := getMerchantFromPages(1)
+	apiResponse := GetMerchantFromPages(1)
 
 	if apiResponse.HasMore != true {
 		t.Errorf("error")

@@ -5,16 +5,16 @@ import (
 	"time"
 )
 
-var CassandraSession *gocql.Session
+var cassandraSession *gocql.Session
 
 func SelectUserData(userId int) UserData {
-	if CassandraSession == nil {
+	if cassandraSession == nil {
 		openSession()
 	}
 
 	userData := UserData{}
 
-	CassandraSession.Query("SELECT verification_state,  bank_account_status FROM user_data WHERE user_id = ?", userId).Consistency(gocql.Quorum).Scan(&userData.VerificationState, &userData.BankAccountStatus)
+	cassandraSession.Query("SELECT verification_state,  bank_account_status FROM user_data WHERE user_id = ?", userId).Consistency(gocql.Quorum).Scan(&userData.VerificationState, &userData.BankAccountStatus)
 
 	return userData
 }
@@ -25,9 +25,9 @@ func openSession() {
 	cluster.ProtoVersion = 4
 	cluster.ConnectTimeout = time.Second * 10
 	cluster.Authenticator = gocql.PasswordAuthenticator{Username: "", Password: ""}
-	cluster.Keyspace = "payment_and_shipping"
+	cluster.Keyspace = "keyspace"
 
-	CassandraSession, _ = cluster.CreateSession()
+	cassandraSession, _ = cluster.CreateSession()
 }
 
 type UserData struct {
