@@ -1,0 +1,6 @@
+# Extract Load Transform - ETL
+
+Go ETL project, which loads data from API in parallel using Goroutines and uses BigQuery as a sink
+
+## Technologies
+Go; Goroutines; Cassandra; BigQuery
